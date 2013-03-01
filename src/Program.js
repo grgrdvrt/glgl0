@@ -13,8 +13,8 @@ glgl.Program = (function()
 	
 		gl.linkProgram(this.glProgram);
 
-		this._parseShader(fShaderSrc);
 		this._parseShader(vShaderSrc);
+		this._parseShader(fShaderSrc);
 
 	}
 	
@@ -23,10 +23,11 @@ glgl.Program = (function()
 		_parseShader : function(src)
 		{
 			var lines = src.split("\n");
+			console.log(lines);
 			var n = lines.length;
 			for(var i = 0; i < n; i++)
 			{
-				var line = lines[i].split(" ");
+				var line = lines[i].trim().split(" ");
 				switch(line[0])
 				{
 					case "attribute" : this._initAttribute(line[2].replace(";", ""), line[1]); break;
