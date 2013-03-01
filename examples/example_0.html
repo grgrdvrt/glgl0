@@ -1,0 +1,87 @@
+<html>
+<head>
+	<script type="text/javascript" src="../src/geom/geom.js"></script>
+	<script type="text/javascript" src="../src/geom/Vector4.js"></script>
+	<script type="text/javascript" src="../src/geom/Matrix4.js"></script>
+	<script type="text/javascript" src="../src/glgl.js"></script>
+	<script type="text/javascript" src="../src/consts.js"></script>
+	<script type="text/javascript" src="../src/Viewport.js"></script>
+	<script type="text/javascript" src="../src/Program.js"></script>
+	<script type="text/javascript" src="../src/DisplayObject.js"></script>
+	<script type="text/javascript" src="../src/primitives.js"></script>
+
+
+	<script id="shader-vs" type="x-shader/x-vertex">
+		attribute vec3 verticesPositions;
+
+		uniform int time;
+		uniform mat4 transform;
+		uniform mat4 projection;
+
+		varying vec4 pos;
+
+		void main(void) {
+			gl_Position = projection * transform * vec4(verticesPositions.xy, 10.0 * cos(20.0 * length(verticesPositions - 0.5)) * cos(0.01 * float(time)) * 0.01, 1.0);
+			pos = vec4(verticesPositions - 0.5, 1.0);
+		}
+	</script>
+
+	<script id="shader-fs" type="x-shader/x-fragment">
+		precision mediump float;
+
+		varying vec4 pos;
+		uniform int time;
+
+		void main(void) {	
+			float len = length(pos);
+			float gs = floor(mod(2.0 * float(time) * len, 2.0));
+			gl_FragColor = vec4(gs, gs, gs, 1.0);
+		}
+	</script>
+
+</head>
+<body>
+	<script>
+		(function (){
+
+		var viewport = new glgl.Viewport(800, 600);
+		var gl = viewport.glContext;
+		
+		var vShaderSrc = document.getElementById("shader-vs").firstChild.textContent;
+		var fShaderSrc = document.getElementById("shader-fs").firstChild.textContent;
+
+		var program = new glgl.Program(gl, vShaderSrc, fShaderSrc);
+		
+		var projection = geom.Matrix4.projection(70, viewport.width / viewport.height, 1, 1000);
+		var time = 0;
+		
+		var finalTransform = new geom.Matrix4();
+		var shapeTransform = new geom.Matrix4();
+		
+
+		var plane = new glgl.primitives.Plane(100, 100);
+		var shape = new glgl.DisplayObject({verticesPositions : plane.vertices},
+									  		{transform:shapeTransform}, program, plane.nVertices, plane.indices);
+
+		shapeTransform.translate(-0.5, -0.5, 0);
+		shapeTransform.rotate(1, 0, 0, -0.3 * Math.PI);
+
+		setInterval(play, 1000/30);
+
+
+		function play()
+		{
+			viewport.clear();
+			
+			finalTransform.identity();
+			finalTransform.translate(0, 0, -1);
+			finalTransform.appendTransform(projection);
+			viewport.render(shape, {time:time, projection:finalTransform});
+			shapeTransform.rotate(0, 1, 0, 0.01);
+			time++;
+		}
+	})();
+
+	</script>
+</body>
+</html>
