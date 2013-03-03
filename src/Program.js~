@@ -49,7 +49,6 @@ glgl.Program = (function()
 	
 		_initAttribute : function (name, type)
 		{
-			if(this.attributes[name])return;
 			var gl = this.glContext;	
 			var location = gl.getAttribLocation(this.glProgram, name);
 			gl.enableVertexAttribArray(location);
@@ -59,7 +58,6 @@ glgl.Program = (function()
 	
 		_initUniform : function(name, type)
 		{
-			if(this.uniforms[name])return;
 			var location = this.glContext.getUniformLocation(this.glProgram, name);
 			this.uniforms[name] = {location:location, toGl:uniformsTypes[type]};
 		}

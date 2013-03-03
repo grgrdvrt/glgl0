@@ -6,6 +6,7 @@ glgl.Renderer = (function()
 		this.glContext;
 		this.width = width;
 		this.height = height;
+        this.currentTextureID = 0;
 		this._initGL();
 
 	}
@@ -37,6 +38,11 @@ glgl.Renderer = (function()
 			gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 		},
 
+        getTexture : function(src)
+        {
+            return new glgl.Texture(this.glContext, this.currentTextureID++, src);
+        },
+
 
 		render : function(mesh, uniforms)
 		{
@@ -49,7 +55,6 @@ glgl.Renderer = (function()
 			this._setUniforms(mesh.program, uniforms);
 
 			this._setAttributes(mesh);
-
 
 
 		    if(!mesh.indices)
