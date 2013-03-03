@@ -45,7 +45,7 @@ glgl.Viewport = (function()
 
 			gl.useProgram(mesh.program.glProgram);
 
-			this._setUniforms(mesh.program, mesh.uniforms);
+			this._setUniforms(mesh.program, mesh.data);
 			this._setUniforms(mesh.program, uniforms);
 
 			this._setAttributes(mesh);
@@ -78,13 +78,14 @@ glgl.Viewport = (function()
 		},
 
 
-		_setUniforms : function(program, uniforms)
+		_setUniforms : function(program, data)
 		{
 			var gl = this.glContext;
-			for(var name in uniforms)
+			for(var name in program.uniforms)
 			{
+                if(!data[name]) continue;
 				var uniform = program.uniforms[name];
-				uniform.toGl(gl, uniform.location, uniforms[name]);
+				uniform.toGl(gl, uniform.location, data[name]);
 			}
 		},
 
@@ -95,7 +96,7 @@ glgl.Viewport = (function()
 			var attributes = program.attributes;
 			for(var name in attributes)
 			{
-				var attribute = mesh.attributes[name];
+				var attribute = mesh.data[name];
 				var cache = mesh._cache[name];
 				if(!cache)
 				{

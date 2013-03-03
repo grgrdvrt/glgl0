@@ -1,8 +1,7 @@
-glgl.DisplayObject = function(attributes, uniforms, program, itemsCount, indices)
+glgl.DisplayObject = function(data, program, itemsCount, indices)
 {
 	this.program = program;
-	this.attributes = attributes;
-	this.uniforms = uniforms;
+	this.data = data;
 	this.drawMethod = glgl.consts.TRIANGLES;
 	this._cache = {};
 	this._indicesCache;

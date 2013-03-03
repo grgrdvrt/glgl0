@@ -52,10 +52,13 @@
 
 		var program = new glgl.Program(gl, vShaderSrc, fShaderSrc);
 		
+		var finalTransform = new geom.Matrix4();
 		var projection = geom.Matrix4.projection(70, viewport.width / viewport.height, 1, 1000);
+		finalTransform.translate(0, 0, -1);
+		finalTransform.appendTransform(projection);
+
 		var time = 0;
 		
-		var finalTransform = new geom.Matrix4();
 		var shapeTransform = new geom.Matrix4();
 		
 
@@ -72,10 +75,6 @@
 		function play()
 		{
 			viewport.clear();
-			
-			finalTransform.identity();
-			finalTransform.translate(0, 0, -1);
-			finalTransform.appendTransform(projection);
 			viewport.render(shape, {time:time, projection:finalTransform});
 			shapeTransform.rotate(0, 1, 0, 0.01);
 			time++;

@@ -23,7 +23,6 @@ glgl.Program = (function()
 		_parseShader : function(src)
 		{
 			var lines = src.split("\n");
-			console.log(lines);
 			var n = lines.length;
 			for(var i = 0; i < n; i++)
 			{
@@ -79,7 +78,7 @@ glgl.Program = (function()
 	
 		mat2 : function (gl, l, data) { gl.uniformMatrix2fv(l, false, data.data); },
 		mat3 : function (gl, l, data) { gl.uniformMatrix3fv(l, false, data.data); },
-		mat4 : function (gl, l, data) { gl.uniformMatrix4fv(l, false, data.data); },
+		mat4 : function (gl, l, data) { gl.uniformMatrix4fv(l, false, data.data); }
 
 	}
 	return Program;
