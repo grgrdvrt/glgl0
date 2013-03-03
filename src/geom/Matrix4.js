@@ -36,11 +36,10 @@ geom.Matrix4 = (function()
 
 		scale : function(sx, sy, sz)
 		{
-			var t = this.data;
-			t[0] *= sx; t[1] *= sy; t[2] *= sz;
-			t[4] *= sx; t[5] *= sy; t[6] *= sy;
-			t[8] *= sx; t[9] *= sz; t[10] *= sz;
-			t[12] *= sx; t[13] *= sy; t[14] *= sz;
+           this._appendTransform(sx, 0, 0, 0,
+                                0, sy, 0, 0,
+                                0, 0, sz, 0,
+                                0, 0, 0, 1);
 		},
 
 		translate : function(tx, ty, tz)
