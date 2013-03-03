@@ -17,7 +17,7 @@ manages a vertex shader and a fragment shader
 DisplayObject.js
 describes a visual object
 
-Viewport.js
+Renderer.js
 manages the rendering context
 
 primitives.js

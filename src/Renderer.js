@@ -1,6 +1,6 @@
-glgl.Viewport = (function()
+glgl.Renderer = (function()
 {
-	function Viewport(width, height)
+	function Renderer(width, height)
 	{
 		this.canvas;
 		this.glContext;
@@ -10,7 +10,7 @@ glgl.Viewport = (function()
 
 	}
 
-	Viewport.prototype = {
+    Renderer.prototype = {
 
 		_initGL : function()
 		{
@@ -121,5 +121,5 @@ glgl.Viewport = (function()
 		this.itemSize = 0;
 		this.isCleared = true;
 	}
-	return Viewport;
+	return Renderer;
 })();
