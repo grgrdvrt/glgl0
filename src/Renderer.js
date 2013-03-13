@@ -6,7 +6,6 @@ glgl.Renderer = (function()
 		this.glContext;
 		this.width = width;
 		this.height = height;
-        this.currentTextureID = 0;
 		this._initGL();
 
 	}
@@ -40,7 +39,20 @@ glgl.Renderer = (function()
 
         getTexture : function(src)
         {
-            return new glgl.Texture(this.glContext, this.currentTextureID++, src);
+            return new glgl.Texture(this.glContext, src);
+        },
+
+        getRttTexture : function(width, height)
+        {
+            return new glgl.RttTexture(this.glContext, width || this.width , height || this.height);
+        },
+
+        setBuffer : function(buffer)
+        {
+            var gl = this.glContext;
+            gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
+            if(buffer) gl.viewport(0, 0, buffer.width, buffer.height);
+            else gl.viewport(0, 0, this.width, this.height);
         },
 
 
@@ -52,7 +64,7 @@ glgl.Renderer = (function()
 			gl.useProgram(mesh.program.glProgram);
 
 			this._setUniforms(mesh.program, mesh.data);
-			this._setUniforms(mesh.program, uniforms);
+			if(uniforms)this._setUniforms(mesh.program, uniforms);
 
 			this._setAttributes(mesh);
 
@@ -90,6 +102,7 @@ glgl.Renderer = (function()
 			{
                 if(!data[name]) continue;
 				var uniform = program.uniforms[name];
+                if(!uniform.location)console.log(name);
 				uniform.toGl(gl, uniform.location, data[name]);
 			}
 		},

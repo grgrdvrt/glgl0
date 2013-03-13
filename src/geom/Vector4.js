@@ -2,13 +2,13 @@ geom.Vector4 = (function()
 {
 	function Vector4(x, y, z, w)
 	{
-		this.data = new Float32Array();
+		this.data = new Float32Array(4);
 		this.set(x, y, z, w);
 	}
 
 	Vector4.prototype = {
 
-		set : function(x, y, z)
+		set : function(x, y, z, w)
 		{
 			var t = this.data;
 			t[0] = x || 0;
